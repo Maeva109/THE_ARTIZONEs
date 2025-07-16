@@ -1,0 +1,69 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": { "name": "Menoua" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[10.0,5.2],[10.2,5.2],[10.2,5.5],[10.0,5.5],[10.0,5.2]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Mifi" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[10.3,5.3],[10.5,5.3],[10.5,5.6],[10.3,5.6],[10.3,5.3]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Bamboutos" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[10.1,5.6],[10.3,5.6],[10.3,5.9],[10.1,5.9],[10.1,5.6]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Ndé" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[10.6,5.1],[10.8,5.1],[10.8,5.4],[10.6,5.4],[10.6,5.1]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Noun" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[10.9,5.2],[11.2,5.2],[11.2,5.7],[10.9,5.7],[10.9,5.2]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Haut-Nkam" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[10.0,5.6],[10.2,5.6],[10.2,5.9],[10.0,5.9],[10.0,5.6]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Koung-Khi" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[10.4,5.7],[10.6,5.7],[10.6,6.0],[10.4,6.0],[10.4,5.7]]]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "name": "Hauts-Plateaux" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[10.2,5.4],[10.4,5.4],[10.4,5.7],[10.2,5.7],[10.2,5.4]]]
+      }
+    }
+  ]
+} 
