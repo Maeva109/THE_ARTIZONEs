@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
@@ -66,17 +65,22 @@ const Contact = () => {
     }
 
     setIsSubmitting(true);
-    
     try {
-      // TODO: Replace with actual API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      const res = await fetch('http://localhost:8000/api/contact/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.fullName,
+          email: formData.email,
+          message: formData.message,
+        }),
+      });
+      const data = await res.json();
+      if (res.ok) {
       toast({
         title: "Message envoyé !",
         description: "Nous vous répondrons dans les plus brefs délais.",
       });
-      
-      // Reset form
       setFormData({
         fullName: '',
         email: '',
@@ -85,6 +89,13 @@ const Contact = () => {
         message: ''
       });
       setErrors({});
+      } else {
+        toast({
+          title: "Erreur",
+          description: data.error || "Une erreur est survenue. Veuillez réessayer.",
+          variant: "destructive",
+        });
+      }
     } catch (error) {
       toast({
         title: "Erreur",
@@ -108,8 +119,8 @@ const Contact = () => {
     <div className="min-h-screen bg-[#EDF0E0]">
       <Header />
       
-      <main className="py-16">
-        <div className="container mx-auto px-4 max-w-4xl">
+      <main className="pt-24 pb-16 px-2 sm:px-4">
+        <div className="container mx-auto px-2 sm:px-4 max-w-4xl">
           {/* Page Title */}
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold text-[#405B35] mb-4">
@@ -139,7 +150,7 @@ const Contact = () => {
                       type="text"
                       value={formData.fullName}
                       onChange={(e) => handleInputChange('fullName', e.target.value)}
-                      className={errors.fullName ? 'border-orange-500' : ''}
+                      className={`w-full ${errors.fullName ? 'border-orange-500' : ''}`}
                       placeholder="Votre nom complet"
                     />
                     {errors.fullName && (
@@ -156,7 +167,7 @@ const Contact = () => {
                       type="email"
                       value={formData.email}
                       onChange={(e) => handleInputChange('email', e.target.value)}
-                      className={errors.email ? 'border-orange-500' : ''}
+                      className={`w-full ${errors.email ? 'border-orange-500' : ''}`}
                       placeholder="votre.email@exemple.com"
                     />
                     {errors.email && (
@@ -173,6 +184,7 @@ const Contact = () => {
                       type="tel"
                       value={formData.phone}
                       onChange={(e) => handleInputChange('phone', e.target.value)}
+                      className="w-full"
                       placeholder="+237 6XX XXX XXX"
                     />
                   </div>
@@ -182,7 +194,7 @@ const Contact = () => {
                       Sujet *
                     </label>
                     <Select value={formData.subject} onValueChange={(value) => handleInputChange('subject', value)}>
-                      <SelectTrigger className={errors.subject ? 'border-orange-500' : ''}>
+                      <SelectTrigger className={`w-full ${errors.subject ? 'border-orange-500' : ''}`}>
                         <SelectValue placeholder="Sélectionnez un sujet" />
                       </SelectTrigger>
                       <SelectContent>
@@ -206,7 +218,7 @@ const Contact = () => {
                       id="message"
                       value={formData.message}
                       onChange={(e) => handleInputChange('message', e.target.value)}
-                      className={errors.message ? 'border-orange-500' : ''}
+                      className={`w-full ${errors.message ? 'border-orange-500' : ''}`}
                       placeholder="Décrivez votre demande en détail..."
                       rows={6}
                     />
@@ -241,7 +253,8 @@ const Contact = () => {
                     </div>
                     <div>
                       <h3 className="font-semibold text-gray-800">Email Support</h3>
-                      <p className="text-gray-600">support@artizone.cm</p>
+                      <p className="text-gray-600">artizonekay@gmail.com</p>
+                      <p className="text-gray-600">varbafoussam@gmail.com</p>
                     </div>
                   </div>
 
@@ -251,7 +264,7 @@ const Contact = () => {
                     </div>
                     <div>
                       <h3 className="font-semibold text-gray-800">Téléphone</h3>
-                      <p className="text-gray-600">+237 6XX XXX XXX</p>
+                      <p className="text-gray-600">+237 695263365/675647869</p>
                     </div>
                   </div>
 
@@ -262,7 +275,7 @@ const Contact = () => {
                     <div>
                       <h3 className="font-semibold text-gray-800">Réseaux Sociaux</h3>
                       <div className="flex gap-3 mt-2">
-                        <a href="#" className="text-[#405B35] hover:text-orange-500">Facebook</a>
+                        <a href="https://www.facebook.com/profile.php?id=100064729103106&locale=fr_FR" className="text-[#405B35] hover:text-orange-500">Facebook</a>
                         <a href="#" className="text-[#405B35] hover:text-orange-500">Instagram</a>
                         <a href="#" className="text-[#405B35] hover:text-orange-500">Twitter</a>
                       </div>

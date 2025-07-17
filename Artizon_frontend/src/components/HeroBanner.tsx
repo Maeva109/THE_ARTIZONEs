@@ -10,11 +10,15 @@ const heroImages = [
     alt: 'Palette de couleurs artisanales'
   },
   {
+    src: '/lovable-uploads/gyy.jpg',
+    alt: 'Palette de couleurs artisanales'
+  },
+  {
     src: '/lovable-uploads/shoes.jpg',
     alt: 'Palette de couleurs artisanales'
   },
   {
-    src: '/lovable-uploads/507.jpg',
+    src: '/lovable-uploads/yyyooo.jpg',
     alt: 'Art créatif africain'
   },
   {
@@ -80,7 +84,7 @@ export const HeroBanner = () => {
   };
 
   return (
-    <section className="relative min-h-[350px] sm:min-h-[450px] md:min-h-[600px] flex items-center justify-center overflow-hidden mt-28 px-2 sm:px-0">
+    <section className="relative min-h-[350px] sm:min-h-[450px] md:min-h-[600px] flex items-center justify-center overflow-hidden px-2 sm:px-0">
       {/* Carousel container */}
       <div className="absolute inset-0">
         <div 

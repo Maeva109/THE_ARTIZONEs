@@ -1,9 +1,49 @@
-
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { useState } from 'react';
 
 export const Footer = () => {
+  const [footerForm, setFooterForm] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    department: '',
+    message: ''
+  });
+  const [footerSubmitting, setFooterSubmitting] = useState(false);
+
+  const handleFooterInput = (field: string, value: string) => {
+    setFooterForm(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleFooterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setFooterSubmitting(true);
+    try {
+      const res = await fetch('http://localhost:8000/api/contact/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: footerForm.name,
+          email: footerForm.email,
+          message: footerForm.message,
+        }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        alert('Message envoyé !');
+        setFooterForm({ name: '', phone: '', email: '', department: '', message: '' });
+      } else {
+        alert(data.error || 'Erreur lors de l\'envoi');
+      }
+    } catch (error) {
+      alert('Erreur lors de l\'envoi');
+    } finally {
+      setFooterSubmitting(false);
+    }
+  };
+
   return (
     <footer className="bg-[#405B35] text-white py-12">
       <div className="container mx-auto px-4">
@@ -34,31 +74,41 @@ export const Footer = () => {
           {/* Center: Espace artisan form */}
           <div>
             <h3 className="text-xl font-bold mb-6">Espace Artisan</h3>
-            <form className="space-y-4">
+            <form className="space-y-4" onSubmit={handleFooterSubmit}>
               <Input 
                 placeholder="Votre nom complet" 
                 className="bg-white/10 border-white/20 text-white placeholder:text-gray-300"
+                value={footerForm.name}
+                onChange={e => handleFooterInput('name', e.target.value)}
               />
               <Input 
                 placeholder="Votre numéro de téléphone" 
                 className="bg-white/10 border-white/20 text-white placeholder:text-gray-300"
+                value={footerForm.phone}
+                onChange={e => handleFooterInput('phone', e.target.value)}
               />
               <Input 
                 placeholder="Votre email" 
                 type="email"
                 className="bg-white/10 border-white/20 text-white placeholder:text-gray-300"
+                value={footerForm.email}
+                onChange={e => handleFooterInput('email', e.target.value)}
               />
               <Input 
                 placeholder="Votre département" 
                 className="bg-white/10 border-white/20 text-white placeholder:text-gray-300"
+                value={footerForm.department}
+                onChange={e => handleFooterInput('department', e.target.value)}
               />
               <Textarea 
                 placeholder="Votre message"
                 rows={3}
                 className="bg-white/10 border-white/20 text-white placeholder:text-gray-300"
+                value={footerForm.message}
+                onChange={e => handleFooterInput('message', e.target.value)}
               />
-              <Button className="w-full bg-orange-500 hover:bg-orange-600 text-white">
-                Envoyer
+              <Button className="w-full bg-orange-500 hover:bg-orange-600 text-white" type="submit" disabled={footerSubmitting}>
+                {footerSubmitting ? 'Envoi en cours...' : 'Envoyer'}
               </Button>
             </form>
           </div>

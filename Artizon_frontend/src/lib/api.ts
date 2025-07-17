@@ -159,29 +159,29 @@ export const tutorialAPI = {
   // Tutorials CRUD
   getTutorials: (filters?: Record<string, string>) => {
     const params = new URLSearchParams(filters);
-    return apiCall(`tutorials/${params.toString() ? `?${params.toString()}` : ''}`, {}, true);
+    return apiCall(`tutorials/${params.toString() ? `?${params.toString()}` : ''}`);
   },
-  getTutorial: (id: number) => apiCall(`tutorials/${id}/`, {}, true),
+  getTutorial: (id: number) => apiCall(`tutorials/${id}/`),
   createTutorial: (data: any) =>
     apiCall('tutorials/', {
       method: 'POST',
       body: JSON.stringify(data),
-    }, true),
+    }),
   updateTutorial: (id: number, data: any) =>
     apiCall(`tutorials/${id}/`, {
       method: 'PUT',
       body: JSON.stringify(data),
-    }, true),
+    }),
   deleteTutorial: (id: number) =>
     apiCall(`tutorials/${id}/`, {
       method: 'DELETE',
-    }, true),
+    }),
 
   // Training fields
-  getFields: () => apiCall('training-fields/', {}, true),
+  getFields: () => apiCall('training-fields/'),
   // Tutorial categories (optionally filtered by field)
   getCategories: (fieldId?: number) =>
-    apiCall(`tutorial-categories/${fieldId ? `?field=${fieldId}` : ''}`, {}, true),
+    apiCall(`tutorial-categories/${fieldId ? `?field=${fieldId}` : ''}`),
 };
 
 export { BACKEND_URL }; 

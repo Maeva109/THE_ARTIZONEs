@@ -17,7 +17,7 @@ from rest_framework import generics
 from django.db import transaction
 from rest_framework.decorators import api_view, permission_classes
 import qrcode
-from django.core.mail import EmailMessage
+from django.core.mail import EmailMessage, send_mail
 from django.conf import settings
 from io import BytesIO
 from django.core.files.base import ContentFile
@@ -545,9 +545,13 @@ def send_verification_code(request):
     # Send email
     subject = "Votre code de vérification Artizone"
     message = f"Votre code de vérification est : {code}"
-    from django.core.mail import send_mail
-    from django.conf import settings
-    send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [email])
+    send_mail(
+        subject,
+        message,
+        settings.DEFAULT_FROM_EMAIL,
+        [email],
+        fail_silently=False,
+    )
     return Response({'message': 'Code envoyé'})
 
 @api_view(['GET'])
@@ -595,5 +599,25 @@ class TutorialViewSet(viewsets.ModelViewSet):
     filter_backends = [filters.SearchFilter, DjangoFilterBackend]
     search_fields = ['title', 'description', 'objectives', 'skills', 'trainer']
     filterset_fields = ['field', 'category', 'format', 'level', 'status']
+
+class ContactFormView(APIView):
+    permission_classes = []  # AllowAny by default
+
+    def post(self, request):
+        name = request.data.get('name')
+        email = request.data.get('email')
+        message = request.data.get('message')
+        if not (name and email and message):
+            return Response({'error': 'All fields are required.'}, status=status.HTTP_400_BAD_REQUEST)
+        subject = f"Contact Form Submission from {name}"
+        body = f"From: {name} <{email}>\n\nMessage:\n{message}"
+        send_mail(
+            subject,
+            body,
+            settings.DEFAULT_FROM_EMAIL,
+            ['artizonekay@gmail.com'],
+            fail_silently=False,
+        )
+        return Response({'success': 'Message sent!'}, status=status.HTTP_200_OK)
 
     

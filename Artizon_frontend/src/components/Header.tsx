@@ -5,6 +5,8 @@ import { Input } from '@/components/ui/input';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { useCart } from '@/context/CartContext';
+import { useFavorites } from '@/hooks/useFavorites';
 
 export const Header = () => {
   const [showArtisansDropdown, setShowArtisansDropdown] = useState(false);
@@ -15,6 +17,8 @@ export const Header = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [searchValue, setSearchValue] = useState('');
+  const { cartItems } = useCart();
+  const { getTotalFavorites } = useFavorites();
 
   const handleLogout = () => {
     logout();
@@ -70,7 +74,7 @@ export const Header = () => {
             <Button variant="ghost" size="icon" className="relative">
               <Heart className="h-5 w-5 text-gray-600" />
               <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
-                2
+                {getTotalFavorites()}
               </span>
             </Button>
             {/* Cart */}
@@ -78,7 +82,7 @@ export const Header = () => {
               <Link to="/panier">
                 <ShoppingCart className="h-5 w-5 text-gray-600" />
                 <span className="absolute -top-1 -right-1 bg-[#405B35] text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
-                  3
+                  {cartItems.length}
                 </span>
               </Link>
             </Button>

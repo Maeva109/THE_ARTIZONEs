@@ -9,7 +9,7 @@ const testimonials = [
     date: '15 Mars 2024',
     rating: 5,
     text: 'Magnifique collier traditionnel ! La qualité est exceptionnelle et l\'artisan a su capturer l\'essence de l\'art camerounais.',
-    productImage: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=100&h=100&fit=crop',
+    productImage: '/lovable-uploads/ndop.jpg',
     avatar: 'https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=50&h=50&fit=crop&crop=face'
   },
   {

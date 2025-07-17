@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import CategoryViewSet, ProductViewSet, CartViewSet, ReviewViewSet, OrderViewSet, RegisterView, LoginView, UserViewSet, AdminStatsView, ArtisanListView, ArtisanDetailView, ArtisanValidateView, ArtisanRejectView, check_email_exists, send_verification_code, get_artisan_by_shop, reviews_by_artisan, artisans_stats, TrainingFieldViewSet, TutorialCategoryViewSet, TutorialViewSet
+from .views import CategoryViewSet, ProductViewSet, CartViewSet, ReviewViewSet, OrderViewSet, RegisterView, LoginView, UserViewSet, AdminStatsView, ArtisanListView, ArtisanDetailView, ArtisanValidateView, ArtisanRejectView, check_email_exists, send_verification_code, get_artisan_by_shop, reviews_by_artisan, artisans_stats, TrainingFieldViewSet, TutorialCategoryViewSet, TutorialViewSet, ContactFormView
 
 router = DefaultRouter()
 router.register(r'categories', CategoryViewSet)
@@ -45,4 +45,8 @@ urlpatterns += [
 
 urlpatterns += [
     path('artisans/stats/', artisans_stats, name='artisans-stats'),
+]
+
+urlpatterns += [
+    path('contact/', ContactFormView.as_view(), name='contact-form'),
 ]

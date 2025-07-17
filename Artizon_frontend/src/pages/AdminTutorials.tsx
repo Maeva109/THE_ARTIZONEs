@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 import { Plus, Edit, Trash2, Eye, EyeOff, Search, Filter } from 'lucide-react';
@@ -16,8 +16,8 @@ interface Tutorial {
   id: number;
   title: string;
   description: string;
-  field: number;
-  category: number;
+  field: string;
+  category: string;
   objectives?: string;
   skills?: string;
   target_audience?: string;
@@ -34,11 +34,13 @@ interface Tutorial {
   created_at?: string;
 }
 
+const FIELD_OPTIONS = [
+  'Bijouterie', 'Textile', 'Sculpture', 'Céramique'
+];
+const CATEGORY_OPTIONS = ["Boucles d'oreilles", "Colliers", "Tissage", "Broderie", "Sculpture sur bois", "Poterie"];
+
 const AdminTutorials = () => {
   const [tutorials, setTutorials] = useState<Tutorial[]>([]);
-  const [fields, setFields] = useState<any[]>([]);
-  const [categories, setCategories] = useState<any[]>([]);
-  const [selectedField, setSelectedField] = useState<number | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -62,25 +64,18 @@ const AdminTutorials = () => {
     status: 'draft',
   });
 
-  // Fetch all tutorials, fields, and categories
+  const [customField, setCustomField] = useState('');
+  const [customCategory, setCustomCategory] = useState('');
+
+  // Fetch all tutorials
   useEffect(() => {
     tutorialAPI.getTutorials().then(setTutorials);
-    tutorialAPI.getFields().then(setFields);
   }, []);
-
-  // Fetch categories when field changes
-  useEffect(() => {
-    if (selectedField) {
-      tutorialAPI.getCategories(selectedField).then(setCategories);
-    } else {
-      setCategories([]);
-    }
-  }, [selectedField]);
 
   // Filtering
   const filteredTutorials = tutorials.filter(tutorial => {
     const matchesSearch = tutorial.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      tutorial.description.toLowerCase().includes(searchTerm.toLowerCase());
+                         tutorial.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || tutorial.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
@@ -88,20 +83,26 @@ const AdminTutorials = () => {
   // CRUD Handlers
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const dataToSend = {
+      ...formData,
+      field: formData.field === 'other' ? customField : formData.field,
+      category: formData.category === 'other' ? customCategory : formData.category,
+    };
     try {
-      if (editingTutorial) {
-        await tutorialAPI.updateTutorial(editingTutorial.id, formData);
+    if (editingTutorial) {
+        await tutorialAPI.updateTutorial(editingTutorial.id, dataToSend);
         toast({ title: 'Tutoriel modifié avec succès' });
-      } else {
-        await tutorialAPI.createTutorial(formData);
+    } else {
+        await tutorialAPI.createTutorial(dataToSend);
         toast({ title: 'Tutoriel créé avec succès' });
       }
       setIsDialogOpen(false);
       setEditingTutorial(null);
-      setFormData({
+    setFormData({
         title: '', description: '', field: '', category: '', format: '', level: '', trainer: '', objectives: '', skills: '', target_audience: '', resource_url: '', trainer_profile: '', schedule: '', status: 'draft',
       });
-      // Refresh list
+      setCustomField('');
+      setCustomCategory('');
       tutorialAPI.getTutorials().then(setTutorials);
     } catch (err: any) {
       toast({ title: err.message, variant: 'destructive' });
@@ -111,7 +112,6 @@ const AdminTutorials = () => {
   const handleEdit = (tutorial: Tutorial) => {
     setEditingTutorial(tutorial);
     setFormData({ ...tutorial });
-    setSelectedField(tutorial.field);
     setIsDialogOpen(true);
   };
 
@@ -172,6 +172,11 @@ const AdminTutorials = () => {
                   {editingTutorial ? 'Modifier le tutoriel' : 'Créer un nouveau tutoriel'}
                 </DialogTitle>
               </DialogHeader>
+              <DialogDescription>
+                {editingTutorial
+                  ? 'Modifiez les informations du tutoriel sélectionné.'
+                  : 'Remplissez ce formulaire pour créer un nouveau tutoriel. Tous les champs sont obligatoires.'}
+              </DialogDescription>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
@@ -185,35 +190,59 @@ const AdminTutorials = () => {
                   </div>
                   <div>
                     <Label htmlFor="field">Champ</Label>
-                    <Select value={formData.field} onValueChange={(value) => setFormData(prev => ({ ...prev, field: value }))}>
+                    <Select
+                      value={formData.field}
+                      onValueChange={(value) => {
+                        setFormData(prev => ({ ...prev, field: value }));
+                        if (value !== 'other') setCustomField('');
+                      }}
+                    >
                       <SelectTrigger>
                         <SelectValue placeholder="Sélectionner" />
                       </SelectTrigger>
                       <SelectContent>
-                        {fields.map((field) => (
-                          <SelectItem key={field.id} value={field.id}>
-                            {field.name}
-                          </SelectItem>
+                        {FIELD_OPTIONS.map(option => (
+                          <SelectItem key={option} value={option}>{option}</SelectItem>
                         ))}
+                        <SelectItem value="other">Autre…</SelectItem>
                       </SelectContent>
                     </Select>
+                    {formData.field === 'other' && (
+                      <Input
+                        placeholder="Entrez un champ personnalisé"
+                        value={customField}
+                        onChange={e => setCustomField(e.target.value)}
+                      />
+                    )}
                   </div>
                 </div>
 
                 <div>
                   <Label htmlFor="category">Catégorie</Label>
-                  <Select value={formData.category} onValueChange={(value) => setFormData(prev => ({ ...prev, category: value }))}>
+                  <Select
+                    value={formData.category}
+                    onValueChange={(value) => {
+                      setFormData(prev => ({ ...prev, category: value }));
+                      if (value !== 'other') setCustomCategory('');
+                    }}
+                  >
                     <SelectTrigger>
                       <SelectValue placeholder="Sélectionner" />
                     </SelectTrigger>
                     <SelectContent>
-                      {categories.map((category) => (
-                        <SelectItem key={category.id} value={category.id}>
-                          {category.name}
-                        </SelectItem>
+                      {CATEGORY_OPTIONS.map(option => (
+                        <SelectItem key={option} value={option}>{option}</SelectItem>
                       ))}
+                      <SelectItem value="other">Autre…</SelectItem>
                     </SelectContent>
                   </Select>
+                  {formData.category === 'other' && (
+                    <Input
+                      placeholder="Entrez une catégorie personnalisée"
+                      value={customCategory}
+                      onChange={e => setCustomCategory(e.target.value)}
+                    />
+                  )}
                 </div>
 
                 <div>
@@ -235,9 +264,9 @@ const AdminTutorials = () => {
                         <SelectValue placeholder="Sélectionner" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Débutant">Débutant</SelectItem>
-                        <SelectItem value="Intermédiaire">Intermédiaire</SelectItem>
-                        <SelectItem value="Avancé">Avancé</SelectItem>
+                        <SelectItem value="beginner">Débutant</SelectItem>
+                        <SelectItem value="intermediate">Intermédiaire</SelectItem>
+                        <SelectItem value="advanced">Avancé</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -248,9 +277,9 @@ const AdminTutorials = () => {
                         <SelectValue placeholder="Sélectionner" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="En ligne">En ligne</SelectItem>
-                        <SelectItem value="Présentiel">Présentiel</SelectItem>
-                        <SelectItem value="Hybride">Hybride</SelectItem>
+                        <SelectItem value="video">Vidéo</SelectItem>
+                        <SelectItem value="pdf">PDF</SelectItem>
+                        <SelectItem value="workshop">Atelier</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>

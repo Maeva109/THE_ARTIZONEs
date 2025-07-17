@@ -51,21 +51,21 @@ const QuiSommesNous = () => {
 
   const teamMembers = [
     {
-      name: "Marie Ndongo",
-      role: "Fondatrice & CEO",
-      image: "https://images.unsplash.com/photo-1494790108755-2616b332c14c?w=150&h=150&fit=crop&crop=face",
+      name: "M. Nana Eddy Merlin",
+      role: "Coordonateur du village Artisanal",
+      image: "/lovable-uploads/co.jpg",
       quote: "Ma passion pour l'artisanat camerounais m'a menée à créer Artizone."
     },
     {
-      name: "Jean-Paul Kamga",
-      role: "Directeur Technique",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
+      name: "M. Chouibou",
+      role: "Chef Section Formation",
+      image: "/lovable-uploads/mch.jpg",
       quote: "Nous utilisons la technologie pour valoriser notre patrimoine culturel."
     },
     {
       name: "Fatima Bello",
       role: "Responsable Artisans",
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face",
+      image: "/lovable-uploads/valo.jpg",
       quote: "Chaque artisan a une histoire unique à partager avec le monde."
     }
   ];
@@ -140,7 +140,7 @@ const QuiSommesNous = () => {
               </div>
               <div className="relative">
                 <img 
-                  src="https://images.unsplash.com/photo-1586985289688-ca3cf47d3e6e?w=600&h=400&fit=crop" 
+                  src="/lovable-uploads/ko.jpg" 
                   alt="Artisan au travail"
                   className="rounded-2xl shadow-xl w-full h-auto"
                 />
@@ -226,22 +226,22 @@ const QuiSommesNous = () => {
             
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               <img 
-                src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=300&h=300&fit=crop"
+                src="/lovable-uploads/bi.jpg"
                 alt="Bijoux artisanaux"
                 className="rounded-lg shadow-md w-full h-48 object-cover hover:scale-105 transition-transform"
               />
               <img 
-                src="https://images.unsplash.com/photo-1500673922987-e212871fec22?w=300&h=300&fit=crop"
+                src="/lovable-uploads/te.jpg"
                 alt="Textile traditionnel"
                 className="rounded-lg shadow-md w-full h-48 object-cover hover:scale-105 transition-transform"
               />
               <img 
-                src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=300&h=300&fit=crop"
+                src="/lovable-uploads/sc.jpg"
                 alt="Sculpture en bois"
                 className="rounded-lg shadow-md w-full h-48 object-cover hover:scale-105 transition-transform"
               />
               <img 
-                src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=300&h=300&fit=crop"
+                src="/lovable-uploads/de2.jpg"
                 alt="Décoration artisanale"
                 className="rounded-lg shadow-md w-full h-48 object-cover hover:scale-105 transition-transform"
               />
